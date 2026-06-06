@@ -1,16 +1,13 @@
 'use strict';
 const http = require('node:http');
-const auth = require('http-auth');
-const router = require('./lib/router');
+const router = require('./lib/router'); // auth の読み込みを削除
 
-const basic = auth.basic({
-  realm: 'Enter username and password.',
-  file: './users.htpasswd'
-});
+// basic の設定部分を丸ごと削除
 
-const server = http.createServer(basic.check((req, res) => {
+// basic.check(...) を外し、直接 router.route を呼び出す形に修正
+const server = http.createServer((req, res) => {
     router.route(req, res);
-  }))
+  })
   .on('error', e => {
     console.error('Server Error', e);
   })
